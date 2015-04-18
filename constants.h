@@ -9,8 +9,8 @@ const int datasize = 100000;
 const int querysize = 100;
 const int familysize = 100;
 //selective hashing specific
-const int Alter = 1;
-const float BaseR = 1.1;
+const int Alter = 10;
+const float BaseR = 20;
 const float c = 1.2;
 const int bucketnum = 9973;
 const int thresholdpoint = (int)(3*datasize/bucketnum);
