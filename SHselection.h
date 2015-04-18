@@ -12,14 +12,14 @@ class SHSelection{
     public:
 
     private:
-    int decisionsignal[datasize];
-    int hashkeylength[L][bucketnum];
+        int decisionsignal[datasize];
+        int hashkeylength[L][bucketnum];
 
     public:
-    //SHSelection();
-    void radius_selection(string decision_file);
+        //SHSelection();
+        void radius_selection(string decision_file);
     private:
-    void radius_test(int);
+        void radius_test(int);
 
 };
 
