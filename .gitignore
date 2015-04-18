@@ -28,3 +28,13 @@
 *.exe
 *.out
 *.app
+
+# Custom
+*.dat
+*.txt
+!exp_ground.txt
+!exp_dist.txt
+!exp_query.txt
+!unif_ground.txt
+!unif_dist.txt
+!unif_query.txt

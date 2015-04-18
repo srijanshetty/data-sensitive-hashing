@@ -2,9 +2,13 @@ CC=g++ -std=c++11
 CFLAGS=-Wall -g
 OFLAGS=-c
 
-.PHONY: all clean
+.PHONY: all clean tags
 
 all: main.out preprocess.out
+
+tags:
+	cscope -Rb
+	ctags -R ./*
 
 main.out: data.h SHindex.o SHgeneral.o SHselection.o statisticsmodule.o knn.o io.o myrandom.o myvector.o main.cpp
 	$(CC) $(CFLAGS) main.cpp knn.o statisticsmodule.o SHindex.o SHgeneral.o SHselection.o io.o myrandom.o myvector.o -o main.out
@@ -37,4 +41,4 @@ io.o: constants.h io.h io.cpp
 	$(CC) $(CFLAGS) $(OFLAGS) io.cpp -o io.o
 
 clean:
-	rm -f *.o *.out *.gch *.dat *.txt
+	rm -f *.o *.out *.gch *.dat *.txt tags
