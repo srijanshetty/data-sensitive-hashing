@@ -21,7 +21,7 @@ void create_datafile() {
 
     // Load the points from the file and dump to data.dat
     long long lineCount = 0;
-    for (std::string line; std::getline(ifile, line); ++lineCount) {
+    for (std::string line; std::getline(ifile, line) && lineCount < datasize; ++lineCount) {
         std::istringstream lineStream(line);
 
         for (int i = 0; i < D; ++i) {
@@ -44,7 +44,7 @@ void create_queryfile() {
     // Temp variables to read unwanted info
     int temp;
 
-    for (std::string line; std::getline(ifile, line); ++lineCount) {
+    for (std::string line; std::getline(ifile, line) && lineCount < querysize; ++lineCount) {
         std::istringstream lineStream(line);
 
         // Read the query number
