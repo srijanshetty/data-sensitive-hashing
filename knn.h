@@ -6,20 +6,20 @@
 
 class Knn{
     public:
-    int knnlist[K];
-    float distlist[K];
-    float sqrtbound;
+        int knnlist[K];
+        float distlist[K];
+        float sqrtbound;
     private:
-    int tochange;
-    float bound;
+        int tochange;
+        float bound;
 
     public:
-    void init();
-    void linear_scan(float [][D], float []);
-    void addvertex(float [][D], int, float []);
+        void init();
+        void linear_scan(float [][D], float []);
+        void addvertex(float [][D], int, float []);
 
     private:
-    void computebound();
+        void computebound();
 };
 
 #endif // KNN_H_INCLUDED
