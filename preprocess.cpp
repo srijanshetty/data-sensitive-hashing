@@ -32,7 +32,7 @@ void create_datafile() {
     ifile.close();
 
     // Write to disk
-    io.diskread_float(DATATARGET, data[0], datasize * D);
+    io.diskwrite_float(DATATARGET, data[0], datasize * D);
 }
 
 void create_queryfile() {
