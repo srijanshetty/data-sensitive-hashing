@@ -17,7 +17,7 @@ const int thresholdpoint = (int)(3*datasize/bucketnum);
 const float thresholdtable = (int)(0.4*L);
 const float ETRatio = 0.3;
 //for basic LSH test
-//const int Alter = 1;
-//const double BaseR = 5;
+// const int Alter = 1;
+// const double BaseR = 5;
 
 #endif // CONSTANTS_H_INCLUDED
