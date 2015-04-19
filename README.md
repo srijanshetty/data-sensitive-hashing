@@ -18,6 +18,11 @@ Overview
 **Concatenation function**
 - The hash family is weak and hence we use concatenation to generate stronger hash functions.
 - We finally use 'L' concatenation functions which have 'M' random functions from the hash family each.
+- Concatenation function is used synonymously with **hashtable**.
+
+**Rrank**
+- This indicates the optimum grid size of each point.
+- DSH allows the grid sizes to be variable and this is enabled by Rrank.
 
 Parameter settings
 ------------------
@@ -41,6 +46,39 @@ There are also some other parameters. However, we do *NOT* recommend you to chan
 - **Alter**: to be edited in next version
 - **RI**: to be edited in next version
 
+Data Structures
+--------------
+
+## SHgeneral.h
+
+**familyvector**
+- The hash functions (which are linear classifiers).
+
+**hashtableindex**
+- The *M* random hash functions corresponding to each hashtable or concatenation function.
+
+**decision**
+- The optimum radius ratio for a give point *i*.
+
+**datahashresult**
+- Given the point and *hashtable*, this returns the *hashvalue*.
+- Note: The *hashkey* is (datahashtable[L][i] % bucketnum).
+
+**datahashtable**
+- TODO:
+
+## SHindex.h
+**hashkeyindex**
+- TODO:
+
+**hashkeylength**
+- The number of points in a setting or (hashtable, layer, bucketindex).
+
+**querytableresult**
+- Hashvalues for the query for each setting of ratio and for each hashtable.
+
+**queryid**
+-
 
 Running procedure
 -----------------

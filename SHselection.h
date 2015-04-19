@@ -12,8 +12,8 @@ class SHSelection{
     public:
 
     private:
-        int decisionsignal[datasize];
-        int hashkeylength[L][bucketnum];
+        int decisionsignal[datasize];                       /**< Store if we have found a radius ratio for a given point */
+        int hashkeylength[L][bucketnum];                    /**< Number of points in each bucket of concatenative function */
 
     public:
         //SHSelection();

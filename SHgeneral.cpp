@@ -16,7 +16,7 @@ SHGeneral::SHGeneral()
     memset(datahashresult, 0, sizeof(datahashresult));
     memset(decision, 0, sizeof(decision));
     R[0] = BaseR;
-    for(int i = 1; i < Alter; i++)R[i] = c * R[i-1];
+    for(int i = 1; i < Alter; i++) R[i] = c * R[i-1];
     isinit = false;
     decisionavailable = false;
 }
@@ -113,27 +113,43 @@ void SHGeneral::productcomputer()
 }
 
 /**
-  * Computes the hashvalue for the the hashtables for a given data point
+  * Computes the hashvalue for each hashtables for a given data point
   * @param product  dotproduct of data with all the familyvectors
-  * @param Rrank    FIXME: Radius ratio which can only be 0 in the current implementation
+  * @param Rrank    The index in R of the radius ratio to use
   * @param table    Hashresults of data with all 'L' hashtables
   */
 void SHGeneral::tableindex(float product[], int Rrank, unsigned int table[])
 {
     int familyint[familysize] = {};
+
+    // Choose the Radius Ratio according to passed index
     float ratio = R[Rrank];
+
+    /* Apply the linear classifier corresponding to each function.
+       Linear classifier f() = w.x + w0
+       product = w.x
+       familyvector[i][D] = w0
+       */
     for(int i = 0; i < familysize; i++)
     {
         float temp = product[i];
-        temp /=  ratio;
+        temp /=  ratio;                         // Standard method for LSH
         temp += familyvector[i][D];
+
+        // Cast to an integer
         familyint[i] = (int)temp;
     }
+
+    /* Now we have to compute the value of the hash function for each of
+       the concatenative functions. Not, we know what 'M' random hashes
+       consititute each concatenative function which is stored in hashtableindex.
+       The rest is simple computation */
     for(int l = 0; l < L; l++)
     {
         table[l] = 0;
         for(int i = 0; i < M; i++)
         {
+            // Start way to concatenate hash family
             table[l] ^= familyint[hashtableindex[l][i]] + 0x9e3779b9 + (table[l] << 6) + (table[l] >> 2);
         }
     }
