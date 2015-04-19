@@ -47,11 +47,11 @@ void StatisticsModule::stat_output(string query_file, string groundtruth_file, s
         sort(gtdist, gtdist + K);
 
         // Print the distances
-        cout << "Query: " << i << endl;
-        copy(testdist, testdist + K, ostream_iterator<float>(cout, " "));
-        cout << endl;
-        copy(gtdist, gtdist + K, ostream_iterator<float>(cout, " "));
-        cout << endl;
+        // cout << "Query: " << i << endl;
+        // copy(testdist, testdist + K, ostream_iterator<float>(cout, " "));
+        // cout << endl;
+        // copy(gtdist, gtdist + K, ostream_iterator<float>(cout, " "));
+        // cout << endl;
 
         for(int j = 0; j < K; j++)
         {
