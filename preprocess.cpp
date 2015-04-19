@@ -1,6 +1,6 @@
 #include "constants.h"
 #include "io.h"
-#define DATASOURCE "tests/temp.data"
+#define DATASOURCE "tests/input.data"
 #define DATATARGET "datads3.dat"
 #define QUERYSOURCE "tests/exp_query.txt"
 #define QUERYTARGET "query3.dat"

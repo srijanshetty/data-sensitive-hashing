@@ -1,13 +1,3 @@
-General Information
--------------------
-
-Here is our latest best implementation of high-dimensional k-nn search.
-The algorithm continuously improves and may differ from what has been described in paper.
-Please visit our website frequently to get our latest version.
-
-If you have any question, pls contact Jinyang.gao@comp.nus.edu.sg for discussion.
-The latest version is V2014.9.1.
-
 Overview
 --------
 
@@ -30,6 +20,23 @@ Overview
 - Now we get the *bucketindex* as *hashkeyindex[][][hashkey]*
 - The *bucketlength* is *hashkeylength[][][hashkey]*
 - To get the points of the *bucket* iterate over *datahashresult[Lused][bucketindex +j]*
+
+Running procedure
+-----------------
+
+## How to Run:
+
+1. Compile using make.
+2. Run preprocess.out to generate the binary representation of input.data.
+3. Run main.out and wait for results.
+
+## Input file format
+- Check [input.data](tests/input.data) for an example input file. This is a space separated version
+  of the forest cover dataset.
+
+## Intermediate Files
+- Many temporay .dat and .txt files are generated which are intermediate representations used by the
+  program. Run make clean if they bother you much.
 
 Parameter settings
 ------------------
@@ -83,28 +90,3 @@ Data Structures
 
 **queryid**
 -
-
-Running procedure
------------------
-
-## Input & Output:
-We use binary array i/o in our implementation. Those arrays are read/written in the following way:
-fread(array, sizeof(double), size, fp);
-
-There are 3 arrays that are needed:
-
-- Data array: should be stored in data.dat in the same folder.
-- Query array: should be stored in query.dat in the same folder.
-- Groundtruth array: should be stored in groundtruth.dat in the same folder (you can also remove the static module, this is only for performance measurement).
-
-## How to Run:
-First, run the pre-processing to get the decision.dat. Then run the main program.
-The main program contains index module, query module and statistic module. After the indexing module the whole index will be build. Then you can run any other module separately. However, if you want to change the parameter settings, you have to rebuild the index. Of course, you can edit the code yourself to make your own uses. We regret that this version do not support incremental maintenance. A more scalable version will be updated in 2014.6.
-
-Results
--------
-
-The results are stored in results.dat. It is also outputted as a binary array.
-
-
-
