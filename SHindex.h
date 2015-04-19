@@ -19,16 +19,16 @@ struct datakey
 class SHIndex{
     protected:
         //for index
-        int hashkeyindex[L][Alter][bucketnum];
-        int hashkeylength[L][Alter][bucketnum];
-        datakey temptable[datasize];
+        int hashkeyindex[L][Alter][bucketnum];           /**< The bucketindex of maps to this (hashtable, layer, hashkey) */
+        int hashkeylength[L][Alter][bucketnum];          /**< # of points that map to this (hashtable, layer, hashkey) */
+        datakey temptable[datasize];                     /**< Helps create a priority queue */
 
         //for query
-        float queryproduct[familysize];
-        unsigned int querytableresult[Alter][L];
-        int queryid[datasize];
-        float query[querysize][D];
-        int queryresult[querysize][K];
+        float queryproduct[familysize];                  /**< Product of query and familyvectors */
+        unsigned int querytableresult[Alter][L];         /**< Hashresults for each (layer, hashtable) */
+        int queryid[datasize];                           /**< Indicates if a datapoint has been tested in a query */
+        float query[querysize][D];                       /**< The query set */
+        int queryresult[querysize][K];                   /**< Query Results */
 
     public:
         void index_construct(string decision_file);

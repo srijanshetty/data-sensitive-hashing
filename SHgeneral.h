@@ -18,9 +18,9 @@ class SHGeneral{
         float dataproduct[datasize][familysize];         /**< dotproduct of data and familyvectors */
         float familyvector[familysize][D+1];             /**< vectors of the family */
         int hashtableindex[L][M];                        /**< Stores the index of familyvectors for each concatenation function */
-        unsigned int datahashresult[datasize][L];        /**< hashresult: point -> table */
-        int datahashtable[L][datasize];                  /**< Hashresult: table -> point */
-        int decision[datasize];                          /**< FIXME: Always a zero vector in this implementation */
+        unsigned int datahashresult[datasize][L];        /**< The hasvalues of a datapoint in each hash table */
+        int datahashtable[L][datasize];                  /**< This stores the points in sorted order. Refer to README */
+        int decision[datasize];                          /**< The radius ratio for each of the points */
         bool decisionavailable;                          /**< Indicates if decision is loaded into memory */
         bool isinit;                                     /**< Indicator for making init idempotent */
 

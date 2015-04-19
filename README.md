@@ -24,6 +24,13 @@ Overview
 - This indicates the optimum grid size of each point.
 - DSH allows the grid sizes to be variable and this is enabled by Rrank.
 
+**Computing Hash of a new point**
+- We get the hashresults of pre-computed data points in *datahashresult*.
+- The *hashkey* equals *datahashresult % bucketnum*.
+- Now we get the *bucketindex* as *hashkeyindex[][][hashkey]*
+- The *bucketlength* is *hashkeylength[][][hashkey]*
+- To get the points of the *bucket* iterate over *datahashresult[Lused][bucketindex +j]*
+
 Parameter settings
 ------------------
 
@@ -65,14 +72,11 @@ Data Structures
 - Note: The *hashkey* is (datahashtable[L][i] % bucketnum).
 
 **datahashtable**
-- TODO:
+- Stores the points in an order for ease of traversal using bucketindex and bucketlength.
 
 ## SHindex.h
-**hashkeyindex**
-- TODO:
-
-**hashkeylength**
-- The number of points in a setting or (hashtable, layer, bucketindex).
+**hashkeyindex and hashkeylength**
+- The bucketindex and bucketlength for a data point.
 
 **querytableresult**
 - Hashvalues for the query for each setting of ratio and for each hashtable.
