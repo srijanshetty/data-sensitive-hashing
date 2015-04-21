@@ -13,6 +13,7 @@
  */
 void StatisticsModule::stat_output(string query_file, string groundtruth_file, string result_file, string output_file, int Lused)
 {
+    // Read the file to log results to
     ofstream fout;
     fout.open(output_file.c_str(), ios::out | ios::app);
     if(!fout)
@@ -21,6 +22,7 @@ void StatisticsModule::stat_output(string query_file, string groundtruth_file, s
         exit(1);
     }
 
+    // Read datastructures from disk to memory
     io.diskread_float(query_file.c_str(), query[0], querysize*D);
     io.diskread_int(groundtruth_file.c_str(), groundtruth[0], querysize*K);
     io.diskread_int(result_file.c_str(), result[0], querysize*K);
@@ -46,13 +48,6 @@ void StatisticsModule::stat_output(string query_file, string groundtruth_file, s
         sort(testdist, testdist + K);
         sort(gtdist, gtdist + K);
 
-        // Print the distances
-        // cout << "Query: " << i << endl;
-        // copy(testdist, testdist + K, ostream_iterator<float>(cout, " "));
-        // cout << endl;
-        // copy(gtdist, gtdist + K, ostream_iterator<float>(cout, " "));
-        // cout << endl;
-
         for(int j = 0; j < K; j++)
         {
             // If any result vector is closer than the farthest groundtruth vector, we consider it a match
@@ -73,15 +68,15 @@ void StatisticsModule::stat_output(string query_file, string groundtruth_file, s
     float recall = (float)sumrecall/ (float)(querysize * K);
     aveerrorate = sumerrorrate / (querysize * K);
 
-    float tempfl = (float)sumcheck;
-    tempfl = tempfl*50/((float)(querysize) * datasize);
+    // Compute the number of data points checked for each query
+    float avepointschecked = ((float)sumcheck / querysize);
 
     // Print statistics
     long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish_ - start_).count();
     fout << Lused << " " << microseconds << " ";
-    fout << recall << " " << aveerrorate << " " << tempfl << endl;
+    fout << recall << " " << aveerrorate << " " << avepointschecked << endl;
     cout << Lused << " " << microseconds << " ";
-    cout << recall << " " << aveerrorate << " "<< tempfl << endl;
+    cout << recall << " " << aveerrorate << " "<< avepointschecked << endl;
 
     fout.close();
 }
