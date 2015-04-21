@@ -1,4 +1,7 @@
 #include "myrandom.h"
+#include <iostream>
+#include <random>
+using namespace std;
 
 /**
  * Generate a random num from 0 to max-1 (max may be any unsigned int)
@@ -18,28 +21,23 @@ int MyRandom::int_random(int max)
 }
 
 /**
- * Generate a simple multi gaussian distribution n dimensions variance matrix is I
+ * Generate a simple multi gaussian distribution n dimensions variance matrix is variance * I
+ * @param variance          variance
  */
-void MyRandom::rand_multi_gaussian(float array[], int n)
+void MyRandom::rand_multi_gaussian(float array[], int n, float variance)
 {
-    for (int i = 0; i < n; i++) array[i] = rand_single_gaussian();
+    for (int i = 0; i < n; i++) array[i] = rand_single_gaussian(variance);
 }
 
 /**
- * Generate a random variable follows Gaussian distribution where mean = 0 varaince = 1
+ * Generate a random variable follows Gaussian distribution where mean = 0 varaince = variance
+ * @param variance      The required variance
  */
-float MyRandom::rand_single_gaussian()
+float MyRandom::rand_single_gaussian(float variance)
 {
-    int sum = 0;
-    for (int i = 0; i < 256; i++)
-    {
-        sum += rand() % 2;
-    }
-    float gaussian  = (float)(sum-128)/8;
-
-    // this part is to avoid repeat series
-    int test = rand() % 8;
-    int sleep;
-    for(int i = 0; i < test; i++) sleep = rand();
-    return gaussian;
+    std::random_device rd;
+    std::default_random_engine generator;
+    generator.seed( rd() );
+    std::normal_distribution<double> distribution(0, variance);
+    return distribution(generator);
 }

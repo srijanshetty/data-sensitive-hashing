@@ -40,7 +40,8 @@ void SHGeneral::family_generator()
     cout<<"SHGeneral::family_generator"<<endl;
     for(int i = 0; i < familysize; i++)
     {
-        MyRandom::rand_multi_gaussian(familyvector[i], D+1);
+        // We need a rand_multi_gaussian with variance matric Identity
+        MyRandom::rand_multi_gaussian(familyvector[i], D+1, 1);
         for (int j = 0; j < D; j++) familyvector[i][j] =  familyvector[i][j]/sqrt(D);
         //for test
         //float sum = 0;
