@@ -77,9 +77,10 @@ void StatisticsModule::stat_output(string query_file, string groundtruth_file, s
     tempfl = tempfl*50/((float)(querysize) * datasize);
 
     // Print statistics
-    fout << Lused << " " << finish_ - start_ << " ";
+    long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish_ - start_).count();
+    fout << Lused << " " << microseconds << " ";
     fout << recall << " " << aveerrorate << " " << tempfl << endl;
-    cout << Lused << " " << finish_ - start_ << " ";
+    cout << Lused << " " << microseconds << " ";
     cout << recall << " " << aveerrorate << " "<< tempfl << endl;
 
     fout.close();
