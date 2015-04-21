@@ -176,6 +176,8 @@ void SHIndex::query_load(string query_file)
     {
         queryid[i] = -1;
     }
+
+    // Number of points checked for each query
     st.sumcheck = 0;
 }
 
@@ -201,6 +203,13 @@ void SHIndex::result_write(string result_file)
     io.diskwrite_int(result_file.c_str(), queryresult[0], querysize*K);
 }
 
+/**
+ * Compute the knn neighbours of a given point
+ * @param querypoint            The querypoint
+ * @param result[]              The vector of results
+ * @param id                    Query ID
+ * @param Lused                 The number of hash tables to use
+ */
 void SHIndex::pointquery(float querypoint[], int result[], int id, int Lused)
 {
     float queryproduct[familysize];
@@ -220,27 +229,34 @@ void SHIndex::pointquery(float querypoint[], int result[], int id, int Lused)
         // Like LSH, we break when we reach a certain level of sqrtbound
         if(knn.sqrtbound < ETRatio * shg.R[n]) break;
 
-        // For each of the used hashtables we check the results
+        // We check only 'Lused' number of hashtables for results
         for(int i = 0; i < Lused; i++)
         {
+            /** Compute the bucketindex of the querypoint and add the
+              elements of that bucket to the knn structure */
             hashkey = querytableresult[n][i] % bucketnum;
             bucketindex = hashkeyindex[i][n][hashkey];
             bucketlength = hashkeylength[i][n][hashkey];
-
             for(int j = 0; j < bucketlength; j++)
             {
+                /* Increment the number of points that we have checked */
+                st.sumcheck++;
+
+                /* tocheck denotes the point for which we want to test knn membership.
+                   Obviously if the hashvalues don't match, we exit */
                 tocheck = shg.datahashtable[i][bucketindex + j];
                 if (shg.datahashresult[tocheck][i] != querytableresult[n][i]) continue;
+
+                /* Check if the point has been tested before, if not mark it as tested */
                 if (queryid[tocheck] == id) continue;
                 queryid[tocheck] = id;
+
+                /* Delegate knn computation to knn module */
                 knn.addvertex(data, tocheck, querypoint);
-                st.sumcheck++;
             }
         }
     }
 
     // Copy all the results from the knn structure to result
     for(int i = 0; i < K; i++) result[i] = knn.knnlist[i];
-
-    // for(int n = 0; n < Alter; n++)cout<<n<<" number checked: "<<sumcheck[n]<<endl;
 }
