@@ -20,30 +20,35 @@ int main()
     io.diskread_float("datads3.dat", data[0], datasize*D);
     cout << "data read from disk" << endl;
 
+    // Generate a randomized query and the groundtruth by a linear scan.
     st.gen_query_and_groundtruth("query3.dat","groundtruth3.dat");
 
+    // Create the index and store to disk
     shg.init();
     shs.radius_selection("decision.dat");
     shi.index_construct("decision.dat");
     shi.index_write("index.dat");
     shi.index_load("index.dat");
 
-    //int Ltemp[16] = {5,6,7,8,9,10,11,12,13,14,15,16,17,18,20,22,23,26,30,35,40,45,50};
-
-    for(int i = 5; i <= 30; i++)
+    // We use different number of hashtables and check accuracy
+    int Ltemp[] = {5, 8, 10, 12, 15, 17, 20, 23, 26, 30, 35, 40, 45, 50};
+    for(int Lused : Ltemp)
     {
+        // Load the query to memory
         shi.query_load("query3.dat");
 
+        // time the query
         st.begin();
-        shi.query_execute(i);
+        shi.query_execute(Lused);
         st.finish();
 
+        // write out the results to disk
         shi.result_write("result.dat");
 
-        st.stat_output("query3.dat","groundtruth3.dat","result.dat","statds3slshnew.txt",i);
+        // Write out the statistics
+        st.stat_output("query3.dat", "groundtruth3.dat", "result.dat", "statds3slshnew.txt", Lused);
     }
 
     cout << "program finished" << endl;
-    // int forcin; cin>>forcin;
     return 0;
 }
