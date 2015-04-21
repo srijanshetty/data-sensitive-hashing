@@ -68,15 +68,12 @@ void StatisticsModule::stat_output(string query_file, string groundtruth_file, s
     float recall = (float)sumrecall/ (float)(querysize * K);
     aveerrorate = sumerrorrate / (querysize * K);
 
-    // Compute the number of data points checked for each query
-    float avepointschecked = ((float)sumcheck / querysize);
-
     // Print statistics
     long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish_ - start_).count();
-    fout << Lused << " " << microseconds << " ";
-    fout << recall << " " << aveerrorate << " " << avepointschecked << endl;
-    cout << Lused << " " << microseconds << " ";
-    cout << recall << " " << aveerrorate << " "<< avepointschecked << endl;
+    fout << "Lused time recall errorrate points" << endl;
+    fout << Lused << " " << microseconds << " " << recall << " " << aveerrorate << " " << sumcheck << endl;
+    cout << "Lused time recall errorrate points" << endl;
+    cout << Lused << " " << microseconds << " " << recall << " " << aveerrorate << " "<< sumcheck << endl;
 
     fout.close();
 }
