@@ -4,6 +4,21 @@
 using namespace std;
 
 /**
+ * Compute the sum of two vectors
+ * @param dim      The number of dimensions
+ * @param id1      First point
+ * @param id2      Second point
+ * @param result   Result point
+ */
+void MyVector::sum(int dim, float id1[], float id2[], float result[])
+{
+    for (int i = 0; i < dim; i++)
+    {
+        result[i] = (id1[i] - id2[i]) + (id1[i] - id2[i]);
+    }
+}
+
+/**
  * Compute the dot product of two points
  * @param dim      The number of dimensions
  * @param id1      First point
