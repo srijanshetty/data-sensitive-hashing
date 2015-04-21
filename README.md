@@ -12,7 +12,10 @@ Overview
 
 **Rrank**
 - This indicates the optimum grid size of each point.
-- DSH allows the grid sizes to be variable and this is enabled by Rrank.
+- In DSH, we want to ensure a good recall. So initially we start with a conservation grid size.
+- If for a given grid size, the bucket is sparse, we want to take a larger bucket so that
+  we have a better recall and this is what is done in SHselection::radius_test, we find
+  the optimum grid size such that the recall is good.
 
 **Computing Hash of a new point**
 - We get the hashresults of pre-computed data points in *datahashresult*.

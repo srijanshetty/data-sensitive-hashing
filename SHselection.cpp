@@ -33,15 +33,12 @@ void SHSelection::radius_selection(string decision_file)
 }
 
 /**
- * Select the optimum radius ratio which ensures that the grids are stable.
- * We start with a larger intial grid size, and provide Alter possible grid sizes
- * for each point. Now, if a higher layer is very densely populated (denoted by threshold)
- * we use a smaller grid for that point and a larger Rrank.
- * Algorithm: We hash every point and then compute the number of points in the buckets of
- * each concatenative function. If for this given setting of Rrank, we
- * get a data point 'k' for which the each of the concatenative functions have
- * a large number of points nearby, we use this value of Rrank for all
- * computations of hashresult for 'k' and thereby use a tighter grid.
+ * This function selects an optimum grid/slot size for the DSH implementation.
+ * In DSH, we want each grid to have a threshold number of points, so we check
+ * the number of points in the grids of each hashtable. If the number of points
+ * is equal to a threshold value, we use that as the grid size.
+ * If it is not equal, we try a larger grid. All this is done to ensure a better
+ * recall and so that each grid has a requisite number of points.
  * @param Rank         The radius ratio we want to test
  */
 void SHSelection::radius_test(int Rrank)

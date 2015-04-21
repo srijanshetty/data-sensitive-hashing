@@ -129,6 +129,10 @@ void SHGeneral::tableindex(float product[], int Rrank, unsigned int table[])
        Linear classifier f() = w.x + w0
        product = w.x
        familyvector[i][D] = w0
+
+       The hash function is a p-stable distribution hash function with
+       the ratio indicating the slot/grid width. Larger the ratio, larger
+       the slot width.
        */
     for(int i = 0; i < familysize; i++)
     {
@@ -141,7 +145,7 @@ void SHGeneral::tableindex(float product[], int Rrank, unsigned int table[])
     }
 
     /* Now we have to compute the value of the hash function for each of
-       the concatenative functions. Not, we know what 'M' random hashes
+       the concatenative functions. Now, we know what 'M' random hashes
        consititute each concatenative function which is stored in hashtableindex.
        The rest is simple computation */
     for(int l = 0; l < L; l++)
