@@ -191,6 +191,7 @@ void SHIndex::query_execute(int Lused)
     {
         // normalknn(query[i], queryresult[i], i, Lused);
         entropyknn(query[i], queryresult[i], i, Lused);
+        // multiprobeknn(query[i], queryresult[i], i, Lused);
         //cout << "doing query id: " << i << " " << st.sumcheck << endl;
     }
 }
@@ -284,7 +285,7 @@ void SHIndex::entropyknn(float querypoint[], int result[], int id, int Lused)
 
     float perturbation[D];
     float newquery[D];
-    for (int i = 0; i < Eperturbations; ++i) {
+    for (int i = 1; i < Eperturbations; ++i) {
         MyRandom::rand_multi_gaussian(perturbation, D, BaseR);
         MyVector::sum(D, querypoint, perturbation, newquery);
 
@@ -297,4 +298,119 @@ void SHIndex::entropyknn(float querypoint[], int result[], int id, int Lused)
 
     // Finally, we copy the top-k vectors to the original result list
     for(int i = 0; i < K; i++) result[i] = eknn.knnlist[i];
+}
+
+/**
+ * Compute the knn neighbours of a given point using the idea of multiprobe LSH
+ * @param querypoint            The querypoint
+ * @param result[]              The vector of results
+ * @param id                    Query ID
+ * @param Lused                 The number of hash tables to use
+ */
+void SHIndex::multiprobeknn(float querypoint[], int result[], int id, int Lused)
+{
+    float queryproduct[familysize];
+
+    // Compute the product of query with the familyvector
+    for(int i = 0; i < familysize; i++) queryproduct[i] = MyVector::dotproduct(D, querypoint, shg.familyvector[i]);
+
+    // Compute the hashresults for every possible value of ratio
+    for(int i = 0; i < Alter; i++) shg.tableindex(queryproduct, i, querytableresult[i]);
+
+    // Initialize the knn structure
+    knn.init();
+
+    int hashkey, bucketindex, bucketlength, tocheck;
+    for(int n = 0; n < Alter; n++)
+    {
+        // Like LSH, we break when we reach a certain level of sqrtbound
+        if(knn.sqrtbound < ETRatio * shg.R[n]) break;
+
+        // We check only 'Lused' number of hashtables for results
+        for(int i = 0; i < Lused; i++)
+        {
+            /** Compute the bucketindex of the querypoint and add the
+              elements of that bucket to the knn structure */
+            hashkey = querytableresult[n][i] % bucketnum;
+            bucketindex = hashkeyindex[i][n][hashkey];
+            bucketlength = hashkeylength[i][n][hashkey];
+
+            for(int j = 0; j < bucketlength; j++)
+            {
+                /* Increment the number of points that we have checked */
+                st.sumcheck++;
+
+                /* tocheck denotes the point for which we want to test knn membership.
+                   Obviously if the hashvalues don't match, we exit */
+                tocheck = shg.datahashtable[i][bucketindex + j];
+                if (shg.datahashresult[tocheck][i] != querytableresult[n][i]) continue;
+
+                /* Check if the point has been tested before, if not mark it as tested */
+                if (queryid[tocheck] == id) continue;
+                queryid[tocheck] = id;
+
+                /* Delegate knn computation to knn module */
+                knn.addvertex(data, tocheck, querypoint);
+            }
+
+            /** Now search the next bucket for the results */
+            while (hashkey < bucketnum && hashkeyindex[i][n][hashkey] == bucketindex + 1) {
+                hashkey++;
+            }
+
+            // In this case there is no next bucket to find
+            if (hashkey != bucketnum) {
+                bucketindex = hashkeyindex[i][n][hashkey];
+                bucketlength = hashkeylength[i][n][bucketlength];
+                for(int j = 0; j < bucketlength; j++)
+                {
+                    /* Increment the number of points that we have checked */
+                    st.sumcheck++;
+
+                    /* tocheck denotes the point for which we want to test knn membership.
+                       Obviously if the hashvalues don't match, we exit */
+                    tocheck = shg.datahashtable[i][bucketindex + j];
+                    if (shg.datahashresult[tocheck][i] != querytableresult[n][i]) continue;
+
+                    /* Check if the point has been tested before, if not mark it as tested */
+                    if (queryid[tocheck] == id) continue;
+                    queryid[tocheck] = id;
+
+                    /* Delegate knn computation to knn module */
+                    knn.addvertex(data, tocheck, querypoint);
+                }
+            }
+
+            /** Now search the previous bucket for the results */
+            while (hashkey >= 0 && hashkeyindex[i][n][hashkey] == bucketindex - 1) {
+                hashkey--;
+            }
+
+            // No previous bucket in this case
+            if (hashkey != -1) {
+                bucketindex = hashkeyindex[i][n][hashkey];
+                bucketlength = hashkeylength[i][n][bucketlength];
+                for(int j = 0; j < bucketlength; j++)
+                {
+                    /* Increment the number of points that we have checked */
+                    st.sumcheck++;
+
+                    /* tocheck denotes the point for which we want to test knn membership.
+                       Obviously if the hashvalues don't match, we exit */
+                    tocheck = shg.datahashtable[i][bucketindex + j];
+                    if (shg.datahashresult[tocheck][i] != querytableresult[n][i]) continue;
+
+                    /* Check if the point has been tested before, if not mark it as tested */
+                    if (queryid[tocheck] == id) continue;
+                    queryid[tocheck] = id;
+
+                    /* Delegate knn computation to knn module */
+                    knn.addvertex(data, tocheck, querypoint);
+                }
+            }
+        }
+    }
+
+    // Finally, we copy the top-k vectors to the original result list
+    for(int i = 0; i < K; i++) result[i] = knn.knnlist[i];
 }

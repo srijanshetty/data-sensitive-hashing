@@ -70,9 +70,7 @@ void StatisticsModule::stat_output(string query_file, string groundtruth_file, s
 
     // Print statistics
     long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(finish_ - start_).count();
-    fout << "Lused time recall errorrate points" << endl;
     fout << Lused << " " << microseconds << " " << recall << " " << aveerrorate << " " << sumcheck << endl;
-    cout << "Lused time recall errorrate points" << endl;
     cout << Lused << " " << microseconds << " " << recall << " " << aveerrorate << " "<< sumcheck << endl;
 
     fout.close();

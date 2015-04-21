@@ -41,6 +41,7 @@ class SHIndex{
     private:
         void normalknn(float [], int [], int,int);
         void entropyknn(float [], int [], int,int);
+        void multiprobeknn(float [], int [], int,int);
 };
 
 #endif // SHINDEXING_H_INCLUDED
