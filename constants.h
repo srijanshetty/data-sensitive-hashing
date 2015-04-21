@@ -16,6 +16,7 @@ const int bucketnum = 9973;                                 /**< Number of bucke
 const int thresholdpoint = (int)(3 * datasize/bucketnum);   /**< # of points in a bucket for it to qualify for a radius test */
 const float thresholdtable = (int)(0.4 * L);                /**< # of tables for a radius to suceed */
 const float ETRatio = 0.3;
+const int Eperturbations = 3;                               /**< Number of perturbation for DSH entropy */
 //for basic LSH test
 // const int Alter = 1;
 // const double BaseR = 5;

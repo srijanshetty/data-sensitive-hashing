@@ -24,6 +24,11 @@ Overview
 - The *bucketlength* is *hashkeylength[][][hashkey]*
 - To get the points of the *bucket* iterate over *datahashresult[Lused][bucketindex +j]*
 
+**DSH Entropy**
+- In DSH Entropy, we perturb the querypoint by a N(querypoint, BaseR) distribution
+  and compute results on these surrogate querypoints as well.
+- This can be enabled in SHindex.cpp::SHindex::query_execute.
+
 Running procedure
 -----------------
 

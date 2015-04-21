@@ -39,7 +39,8 @@ class SHIndex{
         void result_write(string result_file);
 
     private:
-        void pointquery(float [], int [], int,int);
+        void normalknn(float [], int [], int,int);
+        void entropyknn(float [], int [], int,int);
 };
 
 #endif // SHINDEXING_H_INCLUDED

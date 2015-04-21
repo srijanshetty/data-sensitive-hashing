@@ -189,7 +189,8 @@ void SHIndex::query_execute(int Lused)
 {
     for(int i = 0; i < querysize; i++)
     {
-        pointquery(query[i], queryresult[i], i, Lused);
+        // normalknn(query[i], queryresult[i], i, Lused);
+        entropyknn(query[i], queryresult[i], i, Lused);
         //cout << "doing query id: " << i << " " << st.sumcheck << endl;
     }
 }
@@ -210,7 +211,7 @@ void SHIndex::result_write(string result_file)
  * @param id                    Query ID
  * @param Lused                 The number of hash tables to use
  */
-void SHIndex::pointquery(float querypoint[], int result[], int id, int Lused)
+void SHIndex::normalknn(float querypoint[], int result[], int id, int Lused)
 {
     float queryproduct[familysize];
 
@@ -259,4 +260,41 @@ void SHIndex::pointquery(float querypoint[], int result[], int id, int Lused)
 
     // Copy all the results from the knn structure to result
     for(int i = 0; i < K; i++) result[i] = knn.knnlist[i];
+}
+
+/**
+ * Compute the knn neighbours of a given point using the idea of LSH entropy
+ * @param querypoint            The querypoint
+ * @param result[]              The vector of results
+ * @param id                    Query ID
+ * @param Lused                 The number of hash tables to use
+ */
+void SHIndex::entropyknn(float querypoint[], int result[], int id, int Lused)
+{
+    // eknn maintains the top-k vectors for the final result
+    Knn eknn;
+    eknn.init();
+
+    // First perform knn for the qerypoint and get the results
+    int temp_result[K];
+    normalknn(querypoint, temp_result, id, Lused);
+    for (auto tocheck: temp_result) {
+        eknn.addvertex(data, tocheck, querypoint);
+    }
+
+    float perturbation[D];
+    float newquery[D];
+    for (int i = 0; i < Eperturbations; ++i) {
+        MyRandom::rand_multi_gaussian(perturbation, D, BaseR);
+        MyVector::sum(D, querypoint, perturbation, newquery);
+
+        /* Perform knn with the perturbed point and check for knn */
+        normalknn(newquery, temp_result, id, Lused);
+        for (auto tocheck: temp_result) {
+            eknn.addvertex(data, tocheck, querypoint);
+        }
+    }
+
+    // Finally, we copy the top-k vectors to the original result list
+    for(int i = 0; i < K; i++) result[i] = eknn.knnlist[i];
 }
