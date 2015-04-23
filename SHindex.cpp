@@ -189,8 +189,8 @@ void SHIndex::query_execute(int Lused)
 {
     for(int i = 0; i < querysize; i++)
     {
-        // normalknn(query[i], queryresult[i], i, Lused);
-        entropyknn(query[i], queryresult[i], i, Lused);
+        normalknn(query[i], queryresult[i], i, Lused);
+        // entropyknn(query[i], queryresult[i], i, Lused);
         // multiprobeknn(query[i], queryresult[i], i, Lused);
         //cout << "doing query id: " << i << " " << st.sumcheck << endl;
     }
