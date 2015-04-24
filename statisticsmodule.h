@@ -27,6 +27,7 @@ class StatisticsModule{
 
     public:
         int sumcheck;
+        int uniqcheck;
 };
 
 #endif // STAT_H_INCLUDED

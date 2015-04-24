@@ -179,6 +179,7 @@ void SHIndex::query_load(string query_file)
 
     // Number of points checked for each query
     st.sumcheck = 0;
+    st.uniqcheck = 0;
 }
 
 /**
@@ -255,6 +256,9 @@ void SHIndex::normalknn(float querypoint[], int result[], int id, int Lused)
 
                 /* Delegate knn computation to knn module */
                 knn.addvertex(data, tocheck, querypoint);
+
+                /* Increment the unique points that it has to check */
+                st.uniqcheck++;
             }
         }
     }
@@ -351,6 +355,9 @@ void SHIndex::multiprobeknn(float querypoint[], int result[], int id, int Lused)
 
                 /* Delegate knn computation to knn module */
                 knn.addvertex(data, tocheck, querypoint);
+
+                /* Increment the unique points that it has to check */
+                st.uniqcheck++;
             }
 
             /** Now search the next bucket for the results */
@@ -378,6 +385,9 @@ void SHIndex::multiprobeknn(float querypoint[], int result[], int id, int Lused)
 
                     /* Delegate knn computation to knn module */
                     knn.addvertex(data, tocheck, querypoint);
+
+                    /* Increment the unique points that it has to check */
+                    st.uniqcheck++;
                 }
             }
 
@@ -406,6 +416,9 @@ void SHIndex::multiprobeknn(float querypoint[], int result[], int id, int Lused)
 
                     /* Delegate knn computation to knn module */
                     knn.addvertex(data, tocheck, querypoint);
+
+                    /* Increment the unique points that it has to check */
+                    st.uniqcheck++;
                 }
             }
         }

@@ -32,6 +32,7 @@ int main()
 
     // We use different number of hashtables and check accuracy
     int Ltemp[] = {5, 8, 10, 12, 15, 17, 20, 23, 26, 30, 35, 40, 45, 50};
+    // for(int Lused = 5; Lused <= 50; ++Lused)
     for(int Lused : Ltemp)
     {
         // Load the query to memory
